@@ -1,0 +1,5 @@
+# ring-userprincipal-middleware
+
+Augments request with the current user principal from the surrounding servlet 
+environment. For this reason, this middleware will only work as expected when
+running in a servlet.
