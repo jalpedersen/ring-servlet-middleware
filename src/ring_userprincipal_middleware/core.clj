@@ -14,8 +14,8 @@
                       nil)]
       (if principal 
         (app (assoc req :username (.getName principal)
-                    :is-in-role #(.isUserInRole servlet-req %)))
+                    :in-role? #(.isUserInRole servlet-req %)))
         (app (assoc req :username nil
-                    :is-in-role (fn [role] false)))))))
+                    :in-role? (fn [role] false)))))))
 
   
