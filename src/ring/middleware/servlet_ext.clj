@@ -1,4 +1,4 @@
-(ns ring-userprincipal-middleware.core
+(ns ring.middleware.servlet-ext
   (:import javax.servlet.http.HttpServletRequest
            java.security.Principal))
 

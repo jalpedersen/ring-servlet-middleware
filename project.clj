@@ -1,5 +1,5 @@
-(defproject org.signaut/ring-userprincipal-middleware "0.1"
-  :description "Exposes the current user principal from the surrounding servlet environment."
+(defproject org.signaut/ring.middleware.servlet-ext "0.1"
+  :description "Exposes information from the underlying servlet environment."
   :url "http://github.com/jalpedersen/ring-userprincipal-middleware"
   :dependencies [[org.clojure/clojure "1.2.1"]
                  [ring/ring-servlet "0.3.8"]]
