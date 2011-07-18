@@ -16,21 +16,21 @@
 
 (def wrapped-no-auth-no-principal
   (-> #'testapp
-    (wrap-userprincipal :required-roles [])))
+    (wrap-userprincipal :allow-roles [])))
 
 (def wrapped-no-roles
   (-> #'testapp
-    (wrap-userprincipal :required-roles [])
+    (wrap-userprincipal :allow-roles [])
     (wrap-with-fake-user "monty" #{"valid"})))
 
 (def wrapped-with-valid-roles
   (-> #'testapp
-    (wrap-userprincipal :required-roles ["valid"])
+    (wrap-userprincipal :allow-roles ["valid"])
     (wrap-with-fake-user "monty" #{"valid"})))
 
 (def wrapped-with-invalid-roles
   (-> #'testapp
-    (wrap-userprincipal :required-roles ["not-valid"])
+    (wrap-userprincipal :allow-roles ["not-valid"])
     (wrap-with-fake-user "monty" #{"valid"})))
 
 (deftest test1

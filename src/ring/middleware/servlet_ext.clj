@@ -2,17 +2,17 @@
   (:import javax.servlet.http.HttpServletRequest
            java.security.Principal))
 
-(defn- in-role? [^HttpServletRequest servlet-req required-roles]
-  (if (empty? required-roles)
+(defn- in-role? [^HttpServletRequest servlet-req allow-roles]
+  (if (empty? allow-roles)
     true
-    (loop [remaining-roles required-roles]
+    (loop [remaining-roles allow-roles]
       (if (empty? remaining-roles)
         false
         (if (.isUserInRole servlet-req (first remaining-roles))
           true
           (recur (rest remaining-roles)))))))
 
-(defn wrap-userprincipal [app & [ & {:keys [required-roles]}]]
+(defn wrap-userprincipal [app & [ & {:keys [allow-roles]}]]
   "Wrap request with user principal.
   If a userprincipal is available, request is associated with
   a user (:username) and a predicate that given a role name returns true
@@ -26,11 +26,11 @@
                           :headers {"content-type" "text/plain"}
                           :body "Not authenticated."}]
       (if principal
-        (if (in-role? servlet-req required-roles)
+        (if (in-role? servlet-req allow-roles)
           (app (assoc req :username (.getName principal)
                       :in-role? #(.isUserInRole servlet-req %)))
           error-response)
-        (if required-roles
+        (if allow-roles
           error-response
           (app (assoc req :username nil
                       :in-role? (fn [role] false))))))))
