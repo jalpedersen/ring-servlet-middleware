@@ -24,7 +24,7 @@
                                  nil)
           error-response {:status 403
                           :headers {"content-type" "text/plain"}
-                          :body "Not authenticated."}]
+                          :body "Not authorized."}]
       (if principal
         (if (in-role? servlet-req allow-roles)
           (app (assoc req :username (.getName principal)
