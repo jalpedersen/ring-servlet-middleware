@@ -2,7 +2,7 @@
     (:import javax.servlet.http.HttpServletRequest
              javax.servlet.http.HttpSession
              java.security.Principal))
-(def *session-store* (atom {}))
+(def ^:dynamic *session-store* (atom {}))
 
 (defn wrap-with-fake-user [app fake-username fake-roles]
   "Wrap request with fake user and fake roles. Useful while developing."
