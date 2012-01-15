@@ -3,3 +3,8 @@
 Augments request with the current user principal from the surrounding servlet 
 environment. For this reason, this middleware will only work as expected when
 running in a servlet.
+
+## Download and Installation
+Add the following dependency to your `project.clj` and do a `lein deps`.
+
+    [org.signaut/ring.middleware.servlet-ext "0.4"]
