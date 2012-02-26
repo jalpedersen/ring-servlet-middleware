@@ -12,6 +12,15 @@
           true
           (recur (rest remaining-roles)))))))
 
+(defn without-contextpath [handler]
+  "Remove leading context path from URI"
+  (fn [req]
+    (let [^HttpServletRequest servlet-req (:servlet-request req)]
+      (if servlet-req
+        (handler (assoc req :uri (.substring (.getRequestURI servlet-req)
+                                             (.length (.getContextPath servlet-req)))))
+        (handler req)))))
+
 (defn wrap-userprincipal [app & [ & {:keys [allow-roles]}]]
   "Wrap request with user principal.
   If a userprincipal is available, request is associated with

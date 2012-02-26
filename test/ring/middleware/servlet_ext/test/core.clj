@@ -12,6 +12,7 @@
 
 (def wrapped-no-auth
   (-> #'testapp
+    (without-contextpath)
     (wrap-userprincipal)))
 
 (def wrapped-no-auth-no-principal

@@ -7,4 +7,4 @@ running in a servlet.
 ## Download and Installation
 Add the following dependency to your `project.clj` and do a `lein deps`.
 
-    [org.signaut/ring.middleware.servlet-ext "0.4"]
+    [org.signaut/ring.middleware.servlet-ext "0.5"]

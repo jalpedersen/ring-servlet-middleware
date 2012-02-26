@@ -1,4 +1,4 @@
-(defproject org.signaut/ring.middleware.servlet-ext "0.4"
+(defproject org.signaut/ring.middleware.servlet-ext "0.5"
   :description "Exposes information from the underlying servlet environment."
   :url "http://github.com/jalpedersen/ring-userprincipal-middleware"
   :dependencies [[org.clojure/clojure "1.3.0"]
