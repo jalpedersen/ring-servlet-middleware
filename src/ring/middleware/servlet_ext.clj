@@ -42,11 +42,11 @@
 (defn without-contextpath [handler]
   "Remove leading context path from URI"
   (fn [request]
-    (let [^HttpServletRequest servlet-req (:servlet-request request)]
-      (if servlet-req
-        (handler (assoc request :uri (.substring (.getRequestURI servlet-req)
-                                                 (.length (.getContextPath servlet-req)))))
-        (handler request)))))
+    (if-let [^HttpServletRequest servlet-req (:servlet-request request)]
+      (if-let [uri (.getRequestURI servlet-req)]
+        (handler (assoc request :uri (.substring uri (.length (.getContextPath servlet-req)))))
+        (handler request))
+      (handler request))))
 
 (defn wrap-userprincipal [handler & [ & {:keys [allow-roles]}]]
   "Wrap request with user principal.
