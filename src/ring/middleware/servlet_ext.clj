@@ -35,9 +35,8 @@
     (loop [remaining-roles allow-roles]
       (if (empty? remaining-roles)
         false
-        (if (.isUserInRole servlet-req (first remaining-roles))
-          true
-          (recur (rest remaining-roles)))))))
+        (or (.isUserInRole servlet-req (first remaining-roles))
+            (recur (rest remaining-roles)))))))
 
 (defn without-contextpath [handler]
   "Remove leading context path from URI"
@@ -53,23 +52,24 @@
   If a userprincipal is available, request is associated with
   a user (:username) and a predicate that given a role name returns true
   or false depending on wheter the user is in that role or not."
-  (fn [request]
-    (let [^HttpServletRequest servlet-req (:servlet-request request)
-          ^Principal principal (if servlet-req
-                                 (.getUserPrincipal servlet-req)
-                                 nil)
-          error-response {:status 403
-                          :headers {"content-type" "text/plain"}
-                          :body "Not authorized."}]
-      (if principal
-        (if (in-role? servlet-req allow-roles)
-          (handler (assoc request :username (.getName principal)
-                          :in-role? #(.isUserInRole servlet-req %)))
-          error-response)
-        (if allow-roles
-          error-response
-          (handler (assoc request :username nil
-                          :in-role? (fn [role] false))))))))
+  (let [error-response {:status 403
+                        :headers {"content-type" "text/plain"}
+                        :body "Not authorized."}]
+
+    (fn [request]
+      (let [^HttpServletRequest servlet-req (:servlet-request request)
+            ^Principal principal (if servlet-req
+                                   (.getUserPrincipal servlet-req)
+                                   nil)]
+        (if principal
+          (if (in-role? servlet-req allow-roles)
+            (handler (assoc request :username (.getName principal)
+                            :in-role? #(.isUserInRole servlet-req %)))
+            error-response)
+          (if allow-roles
+            error-response
+            (handler (assoc request :username nil
+                            :in-role? (fn [role] false)))))))))
 
 (defn wrap-with-session [handler]
   (fn [request]
